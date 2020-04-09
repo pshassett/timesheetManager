@@ -26,6 +26,9 @@ for employee in list(timesheets.keys())[1:]:
     empdata = empdata.loc[empdata.Job!='Sick Leave']
     # Remove rows that are missing hours or job number.
     empdata.dropna(axis='rows',subset=['Job No.', 'Hours'], inplace=True)
+    # fetch date
+    if str(empdata.Date.max()) != 'NaT':
+            lastday = empdata.Date.max()
     # Add a column for the employee's name.
     empdata['Employee'] = employee
     # Select the entries for each job and append to that job's summary.
@@ -49,7 +52,7 @@ for employee in list(timesheets.keys())[1:]:
         # Replace the job's task summaries with the updated task summaries
         jobs[job] = tasks
 # Grab the year/month from the last employee's data
-lastday = empdata.Date.max()
+# lastday = empdata.Date.max()
 month = str(lastday.month_name())
 monthnum = str(lastday.month)
 year = str(lastday.year)

@@ -29,7 +29,7 @@ def make_job_summary_report(timesheet):
         # Add a column for the employee's name.
         empdata['Employee'] = employee
         # Fetch a date from the entries.
-        if empdata.Date.max() != None:
+        if str(empdata.Date.max()) != 'NaT':
             lastday = empdata.Date.max()
         # Select the entries for each job and append to that job's summary.
         for job in set(empdata.Job.values):
@@ -52,9 +52,11 @@ def make_job_summary_report(timesheet):
             # Replace the job's task summaries with the updated task summaries
             jobs[job] = tasks
     # Grab the year/month from the last employee's data
-    lastday = empdata.Date.max()
     month = str(lastday.month_name())
-    monthnum = str(lastday.month)
+    if lastday.month < 10 :
+        monthnum = '0' + str(lastday.month)
+    else:
+        monthnum = str(lastday.month)
     year = str(lastday.year)
     month_year = month + year
     output_dir = path.join(summary_folder, month_year)
