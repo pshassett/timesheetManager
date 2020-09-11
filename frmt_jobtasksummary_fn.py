@@ -7,6 +7,8 @@ Created on Mon Dec 23 16:08:41 2019
 from os import path, makedirs
 import sys
 import pandas as pd
+from openpyxl import load_workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
 
 # Define the summary folder.
 summary_folder = path.abspath(r"C:\Users\Engineer3\Desktop\HE_Files\Timesheets\JobSummaries")
@@ -64,12 +66,21 @@ def make_job_summary_report(timesheet):
     if not path.exists(output_dir):
         makedirs(output_dir)
     # Report out each job's summary.
+    # fancy way
     for jobname in jobs.keys():
+        # Load the template workbook
+        wb = load_workbook(r'C:\Users\Engineer3\Desktop\HE_Files\Timesheets\JobSummaries\template.xlsx')
+        ws = wb.active
         # Convert the dict to a df and fill nans with 0.
         jobdf = pd.DataFrame(jobs[jobname]).T.fillna(0)
-        # Define the output file.
-        output_file = path.join(output_dir, str(jobname) + ' '+ year[2:] + monthnum + '.xlsx')
-        jobdf.to_excel(output_file)
+        # Dump into the template workbook and save with apropriate naming 
+        for r in dataframe_to_rows(jobdf, header=True, index=True):
+            ws.write(r)        
+        # define the output file.
+        output_file = path.join(output_dir, str(jobname) + ' '+ year[2:] + monthnum + '_TEST.xlsx')
+        wb.save(output_file)
+        wb.close()          
+    
 
 if __name__ == "__main__":
     # Assign the input file argument to a variable.

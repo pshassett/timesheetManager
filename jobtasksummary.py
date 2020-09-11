@@ -8,7 +8,7 @@ from os import path, makedirs
 import pandas as pd
 
 # Open the most recent time sheet file and load the data with pandas.
-file = path.abspath(r"C:\Users\Engineer3\Desktop\HE_Files\Timesheets\GROUPTIMSH2003.xlsm")
+file = path.abspath(r"C:\Users\Engineer3\Desktop\HE_Files\Timesheets\GROUPTIMSH2004.xlsm")
 summary_folder = path.abspath(r"C:\Users\Engineer3\Desktop\HE_Files\JobSummaries")
 
 timesheets = pd.read_excel(file, sheet_name=None)
@@ -61,6 +61,7 @@ output_dir = path.join(summary_folder, month_year)
 # Make the output directory if it doesn't exist already
 if not path.exists(output_dir):
     makedirs(output_dir)
+'''
 # Report out each job's summary.
 for jobname in jobs.keys():
     # define the output file.
@@ -68,4 +69,4 @@ for jobname in jobs.keys():
     # Convert the dict to a df and fill nans with 0.
     jobdf = pd.DataFrame(jobs[jobname]).T.fillna(0)
     jobdf.to_excel(output_file)
-    
+'''
